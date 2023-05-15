@@ -1,0 +1,4 @@
+volumes/*
+!/volumes/**/.gitkeep
+networks
+*.log

@@ -1,0 +1,8 @@
+---
+version: "3.9"
+
+services:
+  dasel:
+    image: ghcr.io/tomwright/dasel:v2.2.0
+    volumes:
+      - "./volumes/celestia-app:/root/.celestia-app"

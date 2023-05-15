@@ -1,0 +1,20 @@
+---
+version: "3"
+
+networks:
+  celestia-stack:
+
+services:
+  celestia-app:
+    build:
+      context: .
+    command:
+      - "/root/celestia-appd"
+      - "start"
+    restart: unless-stopped
+    networks:
+      - celestia-stack
+    volumes:
+      - "./volumes/celestia-app:/root/.celestia-app"
+    ports:
+      - "26656:26656"
