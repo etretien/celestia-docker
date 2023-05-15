@@ -13,14 +13,26 @@ func exporterHTTP() {
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, req *http.Request) {
 		m := metrics.NewSet()
 
-		u, err := url.Parse(viper.GetString("CELESTIA_APP_RPC_URL"))
+		uApp, err := url.Parse(viper.GetString("CELESTIA_APP_RPC_URL"))
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
-		u.Path = "/status"
+		uApp.Path = "/status"
 
-		err = SetCelestiaAppMetrics(m, u.String())
+		uNode, err := url.Parse(viper.GetString("CELESTIA_NODE_RPC_URL"))
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+		uNode.Path = "/status"
+
+		err = SetCelestiaAppMetrics(m, uApp.String())
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+		err = SetCelestiaNodeMetrics(m, uNode.String())
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)

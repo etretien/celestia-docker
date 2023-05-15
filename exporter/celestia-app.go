@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -71,7 +71,7 @@ func getCelestiaAppRPC(url string) (celestiaAppStruct, error) {
 		return celestia, fmt.Errorf("celestia: %v", err)
 	}
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return celestia, fmt.Errorf("celestia: %v", err)
 	}
