@@ -28,7 +28,7 @@ Grafana should be accessible at http://localhost:3000 , default login `admin` an
 
 ## Dashboard
 
-TODO screenshot
+![grafana](grafana.png)
 
 ## License
 
