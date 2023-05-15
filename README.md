@@ -17,6 +17,8 @@ Next, depending on what node you want to run, start init script:
 
 celestia-app is built from source (https://github.com/etretien/celestia-docker/blob/main/Dockerfile), while celestia-node is pulled from official celestiaorg registry.
 
+By default exporter configured to scrape data for both celestia-app and celestia-node. If you dont deploy one of node type, you need to provide env variable for exporter. For example, if you only run celestia light node, run `echo CELESTIA_ENABLE=node > exporter.env`. And if you only run celestia-app, `echo CELESTIA_ENABLE=app > exporter.env`. Defaults is `CELESTIA_ENABLE=app,node`
+
 Start monitoring services:
 ```
 ./init-monitoring.sh
