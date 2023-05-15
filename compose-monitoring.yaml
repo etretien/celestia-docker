@@ -18,7 +18,6 @@ services:
       - celestia-stack
   node-exporter:
     image: prom/node-exporter:latest
-    container_name: node-exporter
     restart: unless-stopped
     volumes:
       - /proc:/host/proc:ro
@@ -34,7 +33,6 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -45,7 +43,6 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: prometheus
     restart: unless-stopped
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -61,7 +58,6 @@ services:
 
   grafana:
     image: grafana/grafana
-    container_name: grafana
     volumes:
       - ./volumes/monitoring-grafana:/var/lib/grafana
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
