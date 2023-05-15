@@ -9,7 +9,8 @@ services:
     build:
       context: exporter
     environment:
-      - CELESTIA_RPC_URL=http://celestia-app:26657
+      - CELESTIA_APP_RPC_URL=http://celestia-app:26657
+      - CELESTIA_NODE_RPC_URL=http://celestia-node:26658
     restart: unless-stopped
     networks:
       - celestia-stack
