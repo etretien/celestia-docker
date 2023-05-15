@@ -36,7 +36,7 @@ func exporterHTTP() {
 			}
 		}
 
-		if contains(viper.GetStringSlice("CELESTIA_ENABLE"), "light") {
+		if contains(viper.GetStringSlice("CELESTIA_ENABLE"), "node") {
 			uNode, err := url.Parse(viper.GetString("CELESTIA_NODE_RPC_URL"))
 			if err != nil {
 				fmt.Println(err)
