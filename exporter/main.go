@@ -8,7 +8,8 @@ func main() {
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()
 
-	viper.SetDefault("CELESITA_RPC_URL", "http://127.0.0.1:26657")
+	viper.SetDefault("CELESTIA_APP_RPC_URL", "http://127.0.0.1:26657")
+	viper.SetDefault("CELESTIA_NODE_RPC_URL", "http://127.0.0.1:26658")
 	viper.SetDefault("PORT", "10000")
 	exporterHTTP()
 }

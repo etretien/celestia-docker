@@ -12,7 +12,7 @@ import (
 	"github.com/VictoriaMetrics/metrics"
 )
 
-type celestiaStruct struct {
+type celestiaAppStruct struct {
 	Jsonrpc string `json:"jsonrpc"`
 	ID      int    `json:"id"`
 	Result  struct {
@@ -55,8 +55,8 @@ type celestiaStruct struct {
 	} `json:"result"`
 }
 
-func getCelestia(url string) (celestiaStruct, error) {
-	var celestia celestiaStruct
+func getCelestiaAppRPC(url string) (celestiaAppStruct, error) {
+	var celestia celestiaAppStruct
 
 	client := http.Client{
 		Timeout: 5 * time.Second,
@@ -85,19 +85,14 @@ func getCelestia(url string) (celestiaStruct, error) {
 }
 
 // SetCelestiaMetrics returns metrics set
-func SetCelestiaMetrics(m *metrics.Set, url string) error {
-	celestia, err := getCelestia(url)
+func SetCelestiaAppMetrics(m *metrics.Set, url string) error {
+	celestia, err := getCelestiaAppRPC(url)
 	if err != nil {
 		return err
 	}
 
-	// celestia_sync_info_latest_block_height
-	// celestia_sync_info_latest_block_time
-	// celestia_sync_info_max_peer_block_height
-	// celestia_validator_info_voting_power
-
 	m.GetOrCreateGauge(
-		fmt.Sprintf(`celestia_sync_info_latest_block_height{moniker="%v"}`, celestia.Result.NodeInfo.Moniker), func() float64 {
+		fmt.Sprintf(`celestia_app_sync_info_latest_block_height{moniker="%v"}`, celestia.Result.NodeInfo.Moniker), func() float64 {
 			f, err := strconv.ParseFloat(celestia.Result.SyncInfo.LatestBlockHeight, 64)
 			if err != nil {
 				log.Println(err)
@@ -106,12 +101,12 @@ func SetCelestiaMetrics(m *metrics.Set, url string) error {
 		})
 
 	m.GetOrCreateGauge(
-		fmt.Sprintf(`celestia_sync_info_latest_block_time{moniker="%v"}`, celestia.Result.NodeInfo.Moniker), func() float64 {
+		fmt.Sprintf(`celestia_app_sync_info_latest_block_time{moniker="%v"}`, celestia.Result.NodeInfo.Moniker), func() float64 {
 			return float64(celestia.Result.SyncInfo.LatestBlockTime.Unix())
 		})
 
 	m.GetOrCreateGauge(
-		fmt.Sprintf(`celestia_sync_info_catchingup{moniker="%v"}`, celestia.Result.NodeInfo.Moniker), func() float64 {
+		fmt.Sprintf(`celestia_app_sync_info_catchingup{moniker="%v"}`, celestia.Result.NodeInfo.Moniker), func() float64 {
 			if celestia.Result.SyncInfo.CatchingUp {
 				return float64(1)
 			}
@@ -119,7 +114,7 @@ func SetCelestiaMetrics(m *metrics.Set, url string) error {
 		})
 
 	m.GetOrCreateGauge(
-		fmt.Sprintf(`celestia_validator_info_voting_power{moniker="%v"}`, celestia.Result.NodeInfo.Moniker), func() float64 {
+		fmt.Sprintf(`celestia_app_validator_info_voting_power{moniker="%v"}`, celestia.Result.NodeInfo.Moniker), func() float64 {
 			f, err := strconv.ParseFloat(celestia.Result.ValidatorInfo.VotingPower, 64)
 			if err != nil {
 				log.Println(err)

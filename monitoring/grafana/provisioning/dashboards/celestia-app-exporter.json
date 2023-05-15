@@ -117,7 +117,7 @@
           "refId": "A"
         }
       ],
-      "title": "Voting Power",
+      "title": "Voting Power (validator only)",
       "type": "timeseries"
     },
     {
