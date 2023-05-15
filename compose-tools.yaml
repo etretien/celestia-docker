@@ -6,3 +6,5 @@ services:
     image: ghcr.io/tomwright/dasel:v2.2.0
     volumes:
       - "./volumes/celestia-app:/root/.celestia-app"
+  curl:
+    image: alpine/curl:3.14
