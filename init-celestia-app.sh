@@ -19,7 +19,7 @@ git clone https://github.com/celestiaorg/networks.git
 PEERS=`cat networks/blockspacerace/peers.txt | tr '\n' ',' | sed 's/,$//'`
 SEEDS=`cat networks/blockspacerace/seeds.txt | tr '\n' ',' | sed 's/,$//'`
 
-docker compose run --rm celestia-app-$CHAIN /root/celestia-appd init $MONIKER --chain-id blockspacerace-0 2>&1 | tee celestia-appd-init.log
+docker compose run --rm celestia-app /root/celestia-appd init $MONIKER --chain-id blockspacerace-0 2>&1 | tee celestia-appd-init.log
 
 # copy genesis to container volume
 cat networks/blockspacerace/genesis.json | docker compose -f compose-app.yaml run --rm -T celestia-app /bin/sh -c "cat > /root/.celestia-app/config/genesis.json"
