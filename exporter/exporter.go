@@ -9,34 +9,48 @@ import (
 	"github.com/spf13/viper"
 )
 
+func contains(s []string, v string) bool {
+	for _, n := range s {
+		if v == n {
+			return true
+		}
+	}
+	return false
+}
+
 func exporterHTTP() {
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, req *http.Request) {
 		m := metrics.NewSet()
+		if contains(viper.GetStringSlice("CELESTIA_ENABLE"), "app") {
+			uApp, err := url.Parse(viper.GetString("CELESTIA_APP_RPC_URL"))
+			if err != nil {
+				fmt.Println(err)
+				w.WriteHeader(http.StatusInternalServerError)
+			}
+			uApp.Path = "/status"
 
-		uApp, err := url.Parse(viper.GetString("CELESTIA_APP_RPC_URL"))
-		if err != nil {
-			fmt.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
+			err = SetCelestiaAppMetrics(m, uApp.String())
+			if err != nil {
+				fmt.Println(err)
+				w.WriteHeader(http.StatusInternalServerError)
+			}
 		}
-		uApp.Path = "/status"
 
-		uNode, err := url.Parse(viper.GetString("CELESTIA_NODE_RPC_URL"))
-		if err != nil {
-			fmt.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
-		}
-		uNode.Path = "/status"
+		if contains(viper.GetStringSlice("CELESTIA_ENABLE"), "light") {
+			uNode, err := url.Parse(viper.GetString("CELESTIA_NODE_RPC_URL"))
+			if err != nil {
+				fmt.Println(err)
+				w.WriteHeader(http.StatusInternalServerError)
+			}
+			uNode.Path = "/status"
 
-		err = SetCelestiaAppMetrics(m, uApp.String())
-		if err != nil {
-			fmt.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
+			err = SetCelestiaNodeMetrics(m, uNode.String())
+			if err != nil {
+				fmt.Println(err)
+				w.WriteHeader(http.StatusInternalServerError)
+			}
 		}
-		err = SetCelestiaNodeMetrics(m, uNode.String())
-		if err != nil {
-			fmt.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
-		}
+
 		m.WritePrometheus(w)
 	})
 
