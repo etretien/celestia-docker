@@ -3,19 +3,16 @@ This repo provides easy way to deploy and monitor celestia nodes (celestia-app a
 Additionally it installs node exporter, cadvisor and corresponding Grafana dashboards.
 Written and tested on blockspacerace chain.
 
-### Getting started:
+## Getting started:
 
 ```
 git clone https://github.com/etretien/celestia-docker
 cd celestia-docker
-
 ```
 
 Next, depending on what node you want to run, start init script:
-* celestia-app
-`MONIKER=<node name> ./init-celestia-app.sh`
-* celestia-node
-`./init-celestia-node.sh`
+* for celestia-app: `MONIKER=<node name> ./init-celestia-app.sh`
+* for celestia-node light: `./init-celestia-node.sh`
 * or both
 
 celestia-app is built from source (https://github.com/etretien/celestia-docker/blob/main/Dockerfile), while celestia-node is pulled from official celestiaorg registry.
@@ -25,8 +22,13 @@ Start monitoring services:
 ./init-monitoring.sh
 ```
 
-Grafana should be accessible at http://localhost:3000, default login `admin` and password `admin`
+Grafana should be accessible at http://localhost:3000 , default login `admin` and password `admin`
 
-### Dashboard
+## Dashboard
 
 TODO screenshot
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
